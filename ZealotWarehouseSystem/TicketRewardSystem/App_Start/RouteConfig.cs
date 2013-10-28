@@ -13,7 +13,7 @@ namespace TicketRewardSystem
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            //routes.MapRoute("routeName", "", new { controller = "Home", action = "Index" });
+            routes.MapRoute("routeName", "", new { controller = "Home", action = "Index" });
 
             routes.MapRoute(
                 name: "Default",
