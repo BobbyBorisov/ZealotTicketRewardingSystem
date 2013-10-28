@@ -24,6 +24,8 @@ namespace TicketRewardSystem
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
+
+
         }
     }
 }
