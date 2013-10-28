@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+
+<div class="row">
+    @Html.ActionLink("Tickets", "Tickets", "Home", null, new { @class="btn btn-large btn-primary" })
+</div>
+@(Html.Kendo().Chart<TicketRewardSystem.ViewModels.RemoteTicketDataChartViewModel>()
+    .Name("chart")
+                .Title(title => title
+                    .Text("Ticket Status Percentage Chart")
+                    .Position(ChartTitlePosition.Bottom))
+        .Legend(legend => legend
+                .Position(ChartLegendPosition.Bottom)
+        )
+        .DataSource(ds =>
+            {
+                ds.Read(read => read.Action("RemoteData", "Home", new { area=""}));
+            })
+        .Series(series => {
+            series.Pie("Value", "Status");
+               
+        })        
+        .Tooltip(tooltip => tooltip
+            .Visible(true)
+            .Format("{0}")
+        ));

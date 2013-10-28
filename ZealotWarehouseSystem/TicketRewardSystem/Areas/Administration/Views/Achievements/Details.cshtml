@@ -1,0 +1,55 @@
+﻿@model TicketRewardSystem.Models.Achievement
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Achievement</legend>
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+
+        <dt>
+            <span>Image logo</span>
+        </dt>
+
+        <dd>
+            <div class="achievement-logo">
+                <img src="@Url.Content(Model.ImageUrl)" alt="Image" width="300px" height="55px" />
+            </div>
+        </dd>
+
+        <dt>
+            <a id="btn-showOwners">Show owners</a>
+        </dt>
+        <dd>
+            <div id="allOwners">
+                @foreach (var user in Model.Owners)
+                {
+                    <p> @user.UserName </p>
+                }
+            </div>
+        </dd>
+
+    </dl>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.AchievementId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

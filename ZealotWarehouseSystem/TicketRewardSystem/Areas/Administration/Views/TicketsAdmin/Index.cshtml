@@ -1,0 +1,97 @@
+﻿@using TicketRewardSystem.Areas.Administration.ViewModels;
+@{
+    ViewBag.Title = "Admins";
+}
+
+<h2>Tickets page</h2>
+
+@(Html.Kendo()
+    .Grid<TicketAdminViewModel>()
+    .Name("grid-tickets")
+    .Columns(columns =>
+    {
+        columns.Bound(model => model.Id);
+        columns.Bound(model => model.Title);
+        columns.Bound(model => model.PostedBy);
+        columns.Bound(model => model.PostedOn);
+        columns.Bound(model => model.AssignedTo);
+        columns.Bound(model => model.Priority);
+        columns.Bound(model => model.Status);
+        columns.Command(command =>
+            {
+                command.Edit();
+                command.Destroy();
+                //command.Custom("Resolve").Click("showResolve");
+            });
+        @*columns.Template(@<text></text>).ClientTemplate(Html.ActionLink("Resolve", "ResolveTicket", new { id = "#= Id #" }).ToHtmlString());*@
+    })
+    .Pageable(page =>
+        {
+            page.PreviousNext(true);
+            page.Numeric(true);
+        })
+    .Sortable(sort =>
+        {
+            sort.AllowUnsort(false);
+            sort.SortMode(GridSortMode.SingleColumn);
+        })
+    .Groupable()
+    .Filterable()
+    .Navigatable()
+    .Editable(edit =>
+        {
+            edit.Mode(GridEditMode.PopUp);
+        })
+    .Selectable(select => select.Mode(GridSelectionMode.Single).Type(GridSelectionType.Row))
+    .DataSource(data =>
+    {
+        data.Ajax()
+            .Model(m => m.Id(b => b.Id))
+            .PageSize(10)
+            .ServerOperation(true)
+            .Events(ev => ev.Error("errorAlert"))
+            .Read("ReadTickets", "TicketsAdmin")
+            .Update("UpdateTicket", "TicketsAdmin")
+            .Destroy("DeleteTicket", "TicketsAdmin");            
+    })
+    .ClientDetailTemplateId("client-template"))
+
+     @(Html.Kendo().Window().Name("ResolveWindow")
+        .Title("Resolve Details")
+        .Visible(false)
+        .Modal(true)
+        .Draggable(true)
+        .Width(300))
+
+<script id="client-template" type="text/x-kendo-template">
+    <div>Description: #: Description#</div>
+</script>
+
+<script id="client-postedby-template" type="text/x-kendo-template">
+    <div>User: #: PostedBy.UserName#</div>
+</script>
+
+<script type="text/x-kendo-template" id="template">
+    <div id="details-container">
+        <h2>xdsaxdas</h2>
+        
+    </div>
+</script>
+
+<script>
+    function errorAlert() {
+        console.log("An error ocurred");
+    }
+    var detailsTemplate = kendo.template($("#template").html());
+
+    function showResolve(e) {
+        e.preventDefault();
+
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var wnd = $("#ResolveWindow").data("kendoWindow");
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+    }
+</script>
+

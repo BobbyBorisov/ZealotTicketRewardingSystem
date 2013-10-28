@@ -1,0 +1,17 @@
+﻿@using TicketRewardSystem.Models;
+@model StatusEnum
+
+@{
+    var enums = Enum.GetValues(typeof(TicketRewardSystem.Models.StatusEnum))
+                        .Cast<TicketRewardSystem.Models.StatusEnum>()
+                        .Select(e => new SelectListItem { Value = ((int)e).ToString(), Text = e.ToString() });    
+}
+
+
+@(Html.Kendo().DropDownList()
+    .Name("Status")
+    .DataTextField("Text")
+    .DataValueField("Value")
+        .BindTo(enums)
+      
+    )

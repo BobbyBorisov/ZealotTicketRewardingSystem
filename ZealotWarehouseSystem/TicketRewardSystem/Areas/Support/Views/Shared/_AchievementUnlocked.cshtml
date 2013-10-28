@@ -1,0 +1,12 @@
+﻿@model IEnumerable<TicketRewardSystem.Models.Achievement>
+
+<div id="achievements">
+    @if (Model != null)
+    {       
+        foreach (var item in Model)
+        {
+            <p><img src="@Url.Content("~/img/" + item.ImageUrl)" alt="Image" width="300px" height="55px" /></p>
+        }
+    }
+</div>
+

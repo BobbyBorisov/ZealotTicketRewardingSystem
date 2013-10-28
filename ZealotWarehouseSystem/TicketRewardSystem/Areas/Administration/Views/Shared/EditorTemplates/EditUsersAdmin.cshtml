@@ -1,0 +1,8 @@
+﻿@model TicketRewardSystem.Areas.Administration.ViewModels.UsersAdminViewModel
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.UserRole.RoleId)
+</div>
+<div class="editor-field">
+    @Html.DropDownListFor(model => model.RoleId, ViewBag.AllRoles as SelectList)
+</div>

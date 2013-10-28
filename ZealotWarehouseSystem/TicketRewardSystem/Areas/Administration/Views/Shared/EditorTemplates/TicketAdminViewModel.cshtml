@@ -1,0 +1,99 @@
+﻿@model TicketRewardSystem.Areas.Administration.ViewModels.TicketAdminViewModel
+
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Id)
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.Id)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Title)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Title)
+    @Html.ValidationMessageFor(model => model.Title)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Description)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Description)
+    @Html.ValidationMessageFor(model => model.Description)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.PostedBy)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.PostedBy)
+    @Html.ValidationMessageFor(model => model.PostedBy)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.PostedOn)
+</div>
+<div class="editor-field">
+    
+    @(Html.Kendo().DateTimePicker()
+        .Name("datetimepicker")
+        
+        .Value(DateTime.Now))
+    @Html.ValidationMessageFor(model => model.PostedOn)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.AssignedTo)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.AssignedTo)
+    @Html.ValidationMessageFor(model => model.AssignedTo)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.ResolvedOn)
+</div>
+<div class="editor-field">
+
+    @(Html.Kendo().DateTimePicker()
+                .Name("datetimepickerresolvedOn")
+
+        .Value(DateTime.Now))  
+    @Html.ValidationMessageFor(model => model.ResolvedOn)
+</div>
+
+
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Priority)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Priority)
+    @Html.ValidationMessageFor(model => model.Priority)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Status)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Status)
+    @Html.ValidationMessageFor(model => model.Status)
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#datetimepicker").closest(".k-widget").attr("id", "datetimepicker_wrapper");
+
+        var datetimepicker = $("#datetimepicker").data("kendoDateTimePicker");
+
+        $("#datetimepickerresolvedOn").closest(".k-widget").attr("id", "datetimepicker_wrapper");
+
+        var datetimepickerResolvedOn = $("#datetimepickerresolvedOn").data("kendoDateTimePicker");
+        datetimepickerResolvedOn.readonly();
+        datetimepicker.readonly();
+       
+    });
+</script>

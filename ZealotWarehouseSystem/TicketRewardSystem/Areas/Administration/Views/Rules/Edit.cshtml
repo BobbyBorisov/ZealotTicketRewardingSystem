@@ -1,0 +1,101 @@
+﻿@model TicketRewardSystem.ViewModels.RuleViewModel
+@{
+    ViewBag.Title = "Edit";    
+    int priorityIndex = (int)Model.Priority;
+    var enums = Enum.GetValues(typeof(TicketRewardSystem.Models.PriorityEnum))
+                        .Cast<TicketRewardSystem.Models.PriorityEnum>()
+                        .Select(e => new SelectListItem { Value = ((int)e).ToString(), Text = e.ToString() });    
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset class="form-horizontal">
+        <legend>AchievementRule</legend>
+
+        @Html.HiddenFor(model => model.AchievementRuleId)
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Title, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.Title)
+                @Html.ValidationMessageFor(model => model.Title, null, new { @class = "help-inline" })
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.TimespanDays, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.TimespanDays)
+                @Html.ValidationMessageFor(model => model.TimespanDays, null, new { @class = "help-inline" })
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Priority, new { @class = "control-label" })
+            <div class="controls">
+                @(Html.Kendo().DropDownListFor(model => model.Priority)
+                        .BindTo(enums)
+                        .DataValueField("Text")
+                        .DataTextField("Text")
+                        .SelectedIndex(priorityIndex)
+                        )                        
+                @Html.ValidationMessageFor(model => model.Priority, null, new { @class = "help-inline" })
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.TicketsCount, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.TicketsCount)
+                @Html.ValidationMessageFor(model => model.TicketsCount, null, new { @class = "help-inline" })
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.HiddenFor(model => model.Achievement)
+                <div class="controls">
+                    @(Html.Kendo().DropDownList()
+                            .Name("achievementList")
+                            .DataTextField("Title")
+                            .DataValueField("AchievementId")
+                            .Events(ev => ev.Select("selectedValue"))
+                            .DataSource(data =>
+                            {
+                                data.Read(read =>
+                                    {
+                                        read.Action("GetAll", "Achievements");
+                                    })
+                                .ServerFiltering(true);
+                            })
+                            .SelectedIndex((Model.Achievement - 1))
+                        )
+                 </div>
+        </div>
+
+
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Save" class="btn" />
+        </div>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+    function selectedValue(e) {
+        $('#Achievement').val(this.dataItem(e.item.index()).AchievementId);
+    }
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

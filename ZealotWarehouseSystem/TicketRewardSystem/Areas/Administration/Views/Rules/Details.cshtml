@@ -1,0 +1,49 @@
+﻿@model TicketRewardSystem.Models.AchievementRule
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>AchievementRule</legend>
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimespanDays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimespanDays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Priority)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Priority)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketsCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TicketsCount)
+        </dd>
+
+    </dl>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.AchievementRuleId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

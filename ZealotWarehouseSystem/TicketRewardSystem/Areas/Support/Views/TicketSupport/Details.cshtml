@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Details";
+}
+@model TicketRewardSystem.ViewModels.TicketViewModel
+@using Microsoft.AspNet.Identity
+
+<div id="container-details">
+    <div class="row">
+        <section class="span8">
+            <h2>@Model.Title</h2>
+
+            <p class="lead"><strong class="muted">Description:</strong>@Html.Raw(Model.Description)</p>
+        </section>
+
+        <aside class="span4">
+            <dl class="dl-horizontal">
+                <dt>Status:</dt>
+                <dd>
+                    @{
+                        var badgeClass = "badge";
+                        switch (Model.Status)
+                        {
+                            case TicketRewardSystem.Models.StatusEnum.Open:
+                                badgeClass += " badge-success";
+                                break;
+                            case TicketRewardSystem.Models.StatusEnum.InProgress:
+                                badgeClass += " badge-warning";
+                                break;
+                            case TicketRewardSystem.Models.StatusEnum.Resolved:
+                                badgeClass += " badge-info";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    <span class="@badgeClass">@Model.Status.ToString()</span>
+                </dd>
+
+                <dt>Date posted:</dt>
+                <dd>@Model.PostedOn</dd>
+
+                <dt>Posted By:</dt>
+                <dd>@Model.PostedBy</dd>
+
+            </dl>
+            
+            <dl class="dl-horizontal">
+                <dt>Assigned To:</dt>
+                <dd>@Model.AssignedTo</dd>
+            </dl>
+
+            <dl class="dl-horizontal">
+                <dt>&nbsp;</dt>
+                <dd>
+                    @if ((Model.Status == TicketRewardSystem.Models.StatusEnum.InProgress) && (Model.AssignedTo == User.Identity.GetUserName()))
+                    {
+                                <div id="link-resolve">
+                                    @Ajax.ActionLink("Mark as Resolved", "ResolveTicket", new { id = Model.TicketId }, new AjaxOptions()
+                                                                    {
+                                                                        HttpMethod = "POST",
+                                                                        InsertionMode = InsertionMode.Replace,
+                                                                        UpdateTargetId = "unlocked",
+                                                                        OnComplete = "setResolvedStatus"
+                                                                    }, new { @class = "btn btn-success" })
+                                        </div>
+                    }
+                </dd>
+            </dl>
+        </aside>
+    </div>
+    <div id="unlocked"></div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        function setResolvedStatus() {
+            $("span.badge").removeClass("badge-warning badge-info").addClass("badge-success").text("Resolved");
+            $("#link-resolve").hide();
+            $("#unlocked").fadeOut(8000);
+        }
+    </script>
+}
+
+@Html.ActionLink("Back to list", "Index", null, new { @class = "btn" })

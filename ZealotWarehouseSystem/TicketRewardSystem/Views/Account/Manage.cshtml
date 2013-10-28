@@ -1,0 +1,47 @@
+@using TicketRewardSystem.Models;
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Manage Account";
+}
+
+<hgroup>
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div class="row-fluid">
+    <div class="span6">
+        <h3>My unlocked achievements:</h3>
+    @(Html.Kendo()
+            .ListView<TicketRewardSystem.ViewModels.AchievementViewModel>()
+            .Name("achievements")
+            .TagName("div")
+            .ClientTemplateId("achievement-template")
+            .Pageable()
+            .DataSource(data =>
+            {
+                data.Read("GetMyAchievements", "TicketSupport", new { area = "Support" });
+                data.ServerOperation(true);
+                data.PageSize(5);
+            })
+        )
+    
+    </div>
+    <div class="span6">
+        @if (ViewBag.HasLocalPassword)
+        {
+            @Html.Partial("_ChangePasswordPartial")
+        }
+        else
+        {
+            @Html.Partial("_SetPasswordPartial")
+        }       
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script id="achievement-template" type="text/x-kendo-template">
+         <p>#: Title #</p>
+         <p><img src="#: ImageUrl #" alt="Image" width="300px" height="55px" /></p>    
+    </script>
+}

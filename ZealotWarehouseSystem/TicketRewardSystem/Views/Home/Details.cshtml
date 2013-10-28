@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Details";
+}
+@model TicketRewardSystem.ViewModels.TicketViewModel
+
+<div class="row">
+    <section class="span8">
+        <h2>@Model.Title</h2>
+        
+        <p class="lead"><strong class="muted">Description:</strong>@Html.Raw(Model.Description)</p>
+    </section>
+
+    <aside class="span4">
+        <dl class="dl-horizontal">
+            <dt>Status:</dt>
+            <dd>
+                @{
+                    var badgeClass = "badge";
+                    switch (Model.Status)
+                    {
+                        case TicketRewardSystem.Models.StatusEnum.Open:
+                            badgeClass += " badge-success";
+                            break;
+                        case TicketRewardSystem.Models.StatusEnum.InProgress:
+                            badgeClass += " badge-warning";
+                            break;
+                        case TicketRewardSystem.Models.StatusEnum.Resolved:
+                            badgeClass += " badge-info";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                <span class="@badgeClass">@Model.Status.ToString()</span>
+            </dd>
+        
+            <dt>Date posted:</dt>
+            <dd>@Model.PostedOn</dd>
+        
+            <dt>Posted By:</dt>
+            <dd>@Model.PostedBy</dd>
+
+        </dl>
+    </aside>
+</div>

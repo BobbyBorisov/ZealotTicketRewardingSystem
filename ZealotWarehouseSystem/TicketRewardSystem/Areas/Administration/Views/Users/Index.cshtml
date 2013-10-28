@@ -1,0 +1,34 @@
+﻿@using TicketRewardSystem.Areas.Administration.ViewModels;
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Users</h2>
+
+@(Html.Kendo()
+    .Grid<UsersAdminViewModel>()
+    .Name("users-admin")
+    .Columns(column =>
+    {
+        column.Bound(model => model.UserName);
+        column.Bound(model => (model.UserRole)).ClientTemplate("#= UserRole != undefined ? UserRole.RoleName : '' #");
+        column.Command(command =>
+            {
+                command.Edit();
+            });
+    })
+    .Editable(edit =>
+        {
+            edit.Mode(GridEditMode.PopUp).TemplateName("EditUsersAdmin");
+        })
+    .DataSource(data =>
+    {
+        data.Ajax()
+            .Model(m => m.Id(b => b.UserId))
+            .ServerOperation(true)
+            .PageSize(10)
+            .Read("ReadAllUsers", "Users")
+            .Update("UpdateUser", "Users");
+    })
+)

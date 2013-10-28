@@ -1,0 +1,34 @@
+﻿@model IEnumerable<TicketRewardSystem.Models.Achievement>
+
+@{
+    ViewBag.Title = "Achievements";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="container">
+    @(Html.Kendo().Grid(Model).Name("rules")
+                        .DataSource(dataSource => dataSource // Configure the grid data source
+                           .Server()
+                            .Model(model => model.Id(ach => ach.AchievementId))
+                           .PageSize(10)
+                        )
+                        .Columns(columns =>
+                            {
+                                columns.Bound(col => col.AchievementId).Title("Achievement");
+                                columns.Bound(col => col.Title);                                
+                                columns.Template(@<text>@Html.ActionLink("Edit", "Edit", new { id = item.AchievementId })</text>);
+                                columns.Template(@<text>@Html.ActionLink("Details", "Details", new { id = item.AchievementId })</text>);
+                                columns.Template(@<text>@Html.ActionLink("Delete", "Delete", new { id = item.AchievementId })</text>);
+
+                            })
+                        .Pageable()
+                        .Sortable()
+    )
+</div>  
+@*<div class="achievement-logo">
+    <img src="@Url.Content(item.ImageUrl)" alt="Image" width="300px" height="55px" />
+</div>*@

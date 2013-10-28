@@ -1,0 +1,17 @@
+﻿@using TicketRewardSystem.Models;
+@model PriorityEnum
+
+@{
+    var enums = Enum.GetValues(typeof(TicketRewardSystem.Models.PriorityEnum))
+                        .Cast<TicketRewardSystem.Models.PriorityEnum>()
+                        .Select(e => new SelectListItem { Value = ((int)e).ToString(), Text = e.ToString() });    
+}
+
+
+@(Html.Kendo().DropDownList()
+    .Name("Priority")
+    .DataTextField("Text")
+    .DataValueField("Value")
+        .BindTo(enums)
+      
+    )

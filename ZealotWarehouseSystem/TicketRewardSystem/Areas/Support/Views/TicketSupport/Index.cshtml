@@ -1,0 +1,111 @@
+﻿@using TicketRewardSystem.Areas.Administration.ViewModels;
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="clearfix">
+        <ul class="nav nav-tabs pull-left">
+            <li class="active">
+                <a href="#" data-role="refresh-grid" data-filter="none">All Issues</a>
+            </li>
+            <li><a href="#" data-role="refresh-grid" data-filter="0">Open</a></li>
+            <li><a href="#" data-role="refresh-grid" data-filter="1">In Progress</a></li>
+            <li><a href="#" data-role="refresh-grid" data-filter="2">Closed</a></li>
+        </ul>
+
+        <a href="#" class="btn pull-right" data-role="refresh-grid" data-filter="myTickets">Assigned to Me</a>
+
+    </div>
+
+    <div class="well well-small">
+        @(Html.Kendo()
+        .Grid<TicketAdminViewModel>()
+        .Name("Tickets")
+        .DataSource(data => data
+            .Ajax()
+            .PageSize(10)
+            .ServerOperation(true)
+            .Read(read => read.Action("ReadAllTickets","TicketSupport", new { area = "Support"}))
+        )
+        .Sortable()
+        .Pageable()
+        .Resizable(resize => resize.Columns(true))
+        .Columns(columns =>
+            {
+                columns.Bound(ticket => ticket.Title).ClientTemplate("<a href='/Support/TicketSupport/Details/#: Id#'>#:Title#</a>");
+                columns.Bound(ticket => ticket.PostedOn);
+                columns.Bound(ticket => ticket.PostedBy);
+                columns.Bound(ticket => ticket.AssignedTo);
+                columns.Bound(ticket => ticket.Priority);
+                columns.Bound(ticket => ticket.Status);
+                columns.Template(@<text></text>).ClientTemplate("<a href='" + Url.Action("GetTicket", "TicketSupport", new { area = "Support" }) + "/#=Id#' class='btn btn-small'>Get the ticket</a>");
+            })
+        .ClientDetailTemplateId("client-template")
+        )
+    </div>
+
+</div>
+
+<script id="client-template" type="text/x-kendo-template">
+    <div>Description: #: Description#</div>
+</script>
+
+<script type="text/javascript">
+    function deactivateNavItems() {
+        $('a[data-role="refresh-grid"]').each(function () {
+            if ($(this).parent().is("li")) {
+                $(this).parent().removeClass("active");
+            } else {
+                $(this).removeClass("active");
+            }
+        });
+    }
+
+    function hideGetColumn() {
+        $("#Tickets tr").find("th:last").hide();
+        $("#Tickets tr").find("td:last").hide();
+    }
+
+    function showGetColumn() {
+        $("#Tickets tr").find("th:last").show();
+        $("#Tickets tr").find("td:last").show();
+    }
+
+    $('a[data-role="refresh-grid"]').click(function (ev) {
+        ev.preventDefault();
+
+        deactivateNavItems();
+        $(this).parent().addClass("active");
+
+        var grid = $("#Tickets").data("kendoGrid");
+
+        var action = $(this).attr("data-filter");
+        if (action == "none") {
+            grid.dataSource.filter({});
+            grid.dataSource.bind("change", hideGetColumn);
+        } else if (action == "myTickets") {
+            var currUserName = "@User.Identity.Name";
+            grid.dataSource.filter({ field: 'AssignedTo', operator: 'eq', value: currUserName });
+            grid.dataSource.bind("change", hideGetColumn);
+        } else {
+            action = Number(action);
+            grid.dataSource.filter({ field: 'Status', operator: 'eq', value: action });
+
+            if (action == "0") {
+                grid.dataSource.bind("change", showGetColumn);
+            } else {
+                grid.dataSource.bind("change", hideGetColumn);
+            }
+        }
+
+        grid.dataSource.fetch(function () {
+            grid.dataSource.read();
+        });
+    });
+
+    $(function () {
+        var grid = $("#Tickets").data("kendoGrid");
+        grid.dataSource.bind("change", hideGetColumn);
+    });
+</script>

@@ -1,0 +1,51 @@
+﻿@model TicketRewardSystem.Models.Achievement
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset class="form-horizontal">
+        <legend>Achievement</legend>
+
+        @Html.HiddenFor(model => model.AchievementId)
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Title, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.Title)
+                @Html.ValidationMessageFor(model => model.Title, null, new { @class = "help-inline" })
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Text, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.Text)
+                @Html.ValidationMessageFor(model => model.Text, null, new { @class = "help-inline" })
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.ImageUrl, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.ImageUrl)
+                @Html.ValidationMessageFor(model => model.ImageUrl, null, new { @class = "help-inline" })
+            </div>
+        </div>
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Save" class="btn" />
+        </div>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
