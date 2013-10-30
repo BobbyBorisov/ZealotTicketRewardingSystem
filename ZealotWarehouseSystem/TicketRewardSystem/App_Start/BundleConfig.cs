@@ -21,7 +21,7 @@ namespace TicketRewardSystem
 
 
             // The Kendo CSS bundle
-            bundles.Add(new StyleBundle("~/Content/kendo").Include(
+            bundles.Add(new StyleBundle("~/Content/kendostyles").Include(
                     "~/Content/Kendo/kendo.common.min.css",
                     "~/Content/Kendo/kendo.default.min.css"));
 
