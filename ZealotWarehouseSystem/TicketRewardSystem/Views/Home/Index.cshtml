@@ -4,9 +4,6 @@
 
 
 
-<div class="row">
-    @Html.ActionLink("Tickets", "Tickets", "Home", null, new { @class="btn btn-large btn-primary" })
-</div>
 @(Html.Kendo().Chart<TicketRewardSystem.ViewModels.RemoteTicketDataChartViewModel>()
     .Name("chart")
                 .Title(title => title
